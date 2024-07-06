@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Your Slots</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 0;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.2em;
+        }
+
+        #register {
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input, select {
+            margin-top: 5px;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .success-message {
+            display: none;
+            color: green;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .tick {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+            background: url('https://image.similarpng.com/very-thumbnail/2021/06/Green-check-mark-icon-on-transparent-background-PNG.png') no-repeat center;
+            background-size: contain;
+            vertical-align: middle;
+        }
+
+        #submitted-details {
+            display: none;
+            margin-top: 20px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #submitted-details h2 {
+            margin-top: 0;
+        }
+
+        #submitted-details ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #submitted-details li {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 600px) {
+            header, #register, #submitted-details {
+                width: 95%;
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            p {
+                font-size: 1em;
+            }
+
+            button {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Book Your Slots</h1>
+        <p>Please Enter All Required Details</p>
+    </header>
+    <div id="register">
+        <form id="registration-form" action="/register/" method="POST" accept-charset="utf-8">
+            {% csrf_token %}
+            <label for="username">Name<em>*</em></label>
+            <input type="text" name="username" class="required" id="username" required>
+      
+            <label for="course">Course<em>*</em></label>
+            
+            <select name="course" id="course" class="required" required>
+                <option value="">Select Course</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Information Technology">Information Technology</option>
+                <option value="Software Engineering">Software Engineering</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Cyber Security">Cyber Security</option>
+                <option value="Cloud Computing">Cloud Computing</option>
+                <option value="Artificial Intelligence">Artificial Intelligence</option>
+                <option value="Machine Learning">Machine Learning</option>
+                <option value="Blockchain Technology">Blockchain Technology</option>
+                <option value="DevOps">DevOps</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Mobile App Development">Mobile App Development</option>
+                <option value="Game Development">Game Development</option>
+                <option value="Network Administration">Network Administration</option>
+                <option value="Database Management">Database Management</option>
+                <option value="Big Data">Big Data</option>
+                <option value="IoT (Internet of Things)">IoT (Internet of Things)</option>
+                <option value="Robotics">Robotics</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="IT Project Management">IT Project Management</option>
+            </select>
+            
+            
+            <label for="password_confirm">Confirm Password<em>*</em></label>
+            <input type="password" name="password_confirm" class="required" id="password_confirm" required>
+            
+            <label for="b_code">B-Code<em>*</em></label>
+            <input type="text" name="b_code" class="required" id="b_code" required>
+            
+            <label for="email">Email<em>*</em></label>
+            <input type="email" name="email" class="required" id="email" required>
+            
+            <label for="phone">Phone<em>*</em></label>
+            <input type="tel" name="phone" class="required" id="phone" required>
+            
+            <label for="time_slot">Time Slot<em>*</em></label>
+            <select id="time_slot" name="time_slot" class="required">
+                <option value="">Select Time Slot</option>
+                <option value="Slot 1: 11:30 AM - 11:50 AM">Slot 1: 11:30 AM - 11:50 AM</option>
+                <option value="Slot 2: 11:50 AM - 12:10 PM">Slot 2: 11:50 AM - 12:10 PM</option>
+                <option value="Slot 3: 12:10 PM - 12:30 PM">Slot 3: 12:10 PM - 12:30 PM</option>
+                <option value="Slot 4: 12:30 PM - 12:50 PM">Slot 4: 12:30 PM - 12:50 PM</option>
+                <option value="Slot 5: 12:50 PM - 1:10 PM">Slot 5: 12:50 PM - 1:10 PM</option>
+                <option value="Slot 6: 1:10 PM - 1:30 PM">Slot 6: 1:10 PM - 1:30 PM</option>
+            </select>
+            
+            <button type="submit">REGISTER</button>
+        </form>
+    </div>
+
+    <center>
+        <div class="success-message" id="success-message">
+            <span class="tick"></span> Thank you for booking! Your details are as follows:
+        </div>
+
+        <div id="submitted-details">
+            <h2>Submitted Details:</h2>
+            <ul id="details-list"></ul>
+            <h2>Please check your email for further details. Note: Please make sure to join the session 5-10 mins before the chosen slot.</h2> 
+        </div>
+    </center>
+
+    <script src="home.js"></script>
+</body>
+</html>

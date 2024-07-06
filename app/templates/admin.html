@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .angle {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .angle {
+            right: 0;
+        }
+
+        .angle2 {
+            right: 20px;
+        }
+
+        #booked-slots {
+            margin: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .edit-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .edit-form h2 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button[type="button"] {
+            margin-right: 10px;
+        }
+
+        em {
+            color: red;
+            font-style: normal;
+        }
+
+        #row-data {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ADMIN</h1>
+        <p>Manage Booked Slots</p>
+    </header>
+
+    <div id="booked-slots">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Mobile Number</th>
+                    <th>Time Slot</th>
+                    <th>Mentor</th>
+                </tr>
+            </thead>
+            <tbody id="booked-slots-body">
+                {% for student in students %}
+                <tr class="row-data">
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.Name }}</td>
+                    <td>{{ student.Email }}</td>
+                    <td>{{ student.Course }}</td>
+                    <td>{{ student.Phone }}</td>
+                    <td>{{ student.TimeSlot }}</td>
+                    <td>{{ student.mentor }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="edit-form" id="edit-form">
+        <h2>Edit Booking</h2>
+        <form id="edit-booking-form" action="" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="stdId" id="sId">
+            <label for="sName">Student Name<em>*</em></label>
+            <input type="text" id="sName" name="studentName" class="required" disabled>
+
+            <label for="cName">Course<em>*</em></label>
+            <input type="text" id="cName" name="course" class="required" disabled>
+
+            <label for="time">Time Slot<em>*</em></label>
+            <input type="text" id="time" name="timeSlot" class="required" disabled>
+
+            <label for="edit-username">Mentor Name<em>*</em></label>
+            <input type="text" id="edit-username" name="mentorName" class="required">
+
+            <label for="edit-mentor">Mentor<em>*</em></label>
+            <select id="edit-mentor" name="mentor" class="required">
+                {% for mentor in mentors %}
+                <option value="{{ mentor.Name }}">{{ mentor.Mentor }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" onclick="saveBooking()">Save</button>
+            <button type="reset" onclick="cancelEdit()">Cancel</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const rows = document.querySelectorAll('.row-data');
+
+            rows.forEach(function (row) {
+                row.addEventListener('click', function () {
+                    const cells = row.cells;
+                    document.getElementById('sId').value = cells[0].textContent;
+                    document.getElementById('sName').value = cells[1].textContent;
+                    document.getElementById('cName').value = cells[3].textContent;
+                    document.getElementById('time').value = cells[5].textContent;
+                });
+            });
+
+            const mentorSelect = document.getElementById('edit-mentor');
+            const usernameInput = document.getElementById('edit-username');
+            usernameInput.value = mentorSelect.value
+            mentorSelect.addEventListener('change', function () {
+                usernameInput.value = mentorSelect.value;
+            });
+
+            window.saveBooking = function() {
+                const studentId = document.getElementById('sId').value;
+                const mentorName = document.getElementById('edit-username').value;
+                const mentor = document.getElementById('edit-mentor').name;
+                const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+                const postObj = {
+                    stdId: studentId,
+                    csrfmiddlewaretoken: csrfToken,
+                    mentorName: mentorName,
+                    mentor: mentor
+                };
+
+                fetch('/save/booking/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify(postObj),
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok. Status: ' + response.status + ', Text: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Booking saved successfully:', data);
+                    // Handle success, update UI, etc.
+                })
+                .catch(error => {
+                    console.error('Error saving booking:', error);
+                    alert('Error saving booking: ' + error.message);
+                    // Handle error, show message, etc.
+                });
+            };
+
+            window.cancelEdit = function() {
+                // Clear form data or perform other actions when cancelling
+                const form = document.getElementById('edit-booking-form');
+                form.reset();
+                // Add any other actions you want to perform on cancel
+            };
+        });
+    </script>
+</body>
+
+</html>
